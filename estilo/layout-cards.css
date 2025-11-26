@@ -12,9 +12,9 @@ main {
 
 /* Especificidad -> 011 */
 main>*:first-child {
-    grid-column: 1 / -1;      
+    grid-column: 1 / -1;
     text-align: center;
-    grid-gap:0;    
+    grid-gap: 0;
 }
 
 @media (min-width: 320px) and (max-width: 799px) {

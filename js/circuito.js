@@ -170,10 +170,6 @@ class CargadorKML {
             zoom: 14
         });
 
-        new mapboxgl.Marker()
-            .setLngLat(centro)
-            .addTo(this.#mapa);
-
         const geojson = {
             'type': 'Feature',
             'properties': {},
@@ -187,7 +183,7 @@ class CargadorKML {
             this.#mapa.addSource('circuito', {
                 'type': 'geojson',
                 'data': geojson
-            }.bind(this));
+            });
             this.#mapa.addLayer({
                 'id': 'circuito-linea',
                 'type': 'line',

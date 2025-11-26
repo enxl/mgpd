@@ -1,16 +1,17 @@
 <!DOCTYPE HTML>
 
 <html lang="es">
+
 <head>
     <!-- Datos que describen el documento -->
     <meta charset="UTF-8" />
     <title>MotoGP-Cronómetro</title>
-    <meta name ="author" content ="Enol Monte Soto" />
-    <meta name ="description" content ="Cronómetro." />
-    <meta name ="keywords" content ="MotoGP, Juegos, Cronómetro" />
-    <meta name ="viewport" content ="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Enol Monte Soto" />
+    <meta name="description" content="Cronómetro." />
+    <meta name="keywords" content="MotoGP, Juegos, Cronómetro" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="multimedia/favicon.ico" />
-    <link rel="stylesheet" type="text/css" href="estilo/estilo.css"/>
+    <link rel="stylesheet" type="text/css" href="estilo/estilo.css" />
     <link rel="stylesheet" type="text/css" href="estilo/layout.css" />
     <script src="js/cronometro.js"></script>
 </head>
@@ -25,13 +26,14 @@
             <a href="circuito.html" title="Información del circuito">Circuito</a>
             <a href="meteorologia.html" title="Información meteorológica">Meteorología</a>
             <a href="clasificaciones.php" title="Clasificaciones en MotoGP">Clasificaciones</a>
-            <a href="juegos.html" title="Juegos en MotoGP-Desktop"  class="active">Juegos</a>
+            <a href="juegos.html" title="Juegos en MotoGP-Desktop" class="active">Juegos</a>
             <a href="ayuda.html" title="Ayuda de MotoGP-Desktop">Ayuda</a>
         </nav>
     </header>
 
     <p>Estás en: <a href="index.html" title="Inicio">Inicio</a> >> <a href="juegos.html" title="Inicio">Juegos</a> >>
-        <strong>Cronómetro JavaScript</strong></p>
+        <strong>Cronómetro JavaScript</strong>
+    </p>
 
     <main>
         <h2>Cronómetro</h2>
@@ -43,7 +45,9 @@
 
     <script>
         c = new Cronometro();
+        c.asociarEventosBotones();
     </script>
 
 </body>
+
 </html>

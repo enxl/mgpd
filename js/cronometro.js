@@ -11,10 +11,9 @@ class Cronometro {
 
     constructor() {
         this.#tiempo = 0;
-        this.#asociarEventosBotones();
     }
 
-    #asociarEventosBotones() {
+    asociarEventosBotones() {
         const botonArrancar = document.querySelector("main button:nth-of-type(1)");
         const botonParar = document.querySelector("main button:nth-of-type(2)");
         const botonReiniciar = document.querySelector("main button:nth-of-type(3)");
