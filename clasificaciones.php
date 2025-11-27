@@ -21,6 +21,23 @@
             return $xml;
         }
 
+        public function formatearDuracion(string $duracion): string {
+            preg_match('/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?/', $duracion, $m);
+    
+            $horas = isset($m[1]) ? (int)$m[1] : 0;
+            $minutos = isset($m[2]) ? (int)$m[2] : 0;
+            $segundos = isset($m[3]) ? $m[3] : 0;
+    
+            $horas = sprintf("%02d", $horas);
+            $minutos = sprintf("%02d", $minutos);
+
+            if (is_numeric($segundos) && floor($segundos) == $segundos) {
+                $segundos = sprintf("%02d", $segundos);
+            }
+    
+            return "{$horas}h, {$minutos}m, {$segundos}s";
+        }
+
     }
 ?>
 
@@ -61,7 +78,13 @@
          <?php
             $clasificaciones = new Clasificaciones();
             $xml = $clasificaciones->consultar();
+            $tiempo = (string)$xml->vencedor['tiempo'];
+            $tiempoFormateado = $clasificaciones->formatearDuracion($tiempo);
+
             if($xml) {
+                echo "<h3>Ganador de la carrera</h3>";
+                echo "<p>$xml->vencedor</p>";
+                echo "<p>En un tiempo de $tiempoFormateado</p>";
                 echo "<h3>Cabeza de clasificación tras la carrera</h3>";
                 echo "<ol>";
                 foreach ($xml->clasificados->clasificado as $c) {
