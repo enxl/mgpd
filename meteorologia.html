@@ -36,32 +36,20 @@
     <p>Estás en: <a href="index.html" title="Inicio">Inicio</a> >> <strong>Meteorología</strong></p>
 
     <main>
-        <h2>Información Meteorológica</h2>
+        <h2>Meteorología</h2>
+        <h3>Datos de la localidad</h3>
         <script>
-            let c = new Ciudad("Oberlungwitz", "Alemania", "oberlungwitzense");
+            const c = new Ciudad("Oberlungwitz", "Alemania", "oberlungwitzense");
             c.rellenarDatos(6794, 12.723882235743968, 50.78520807361491);
+            const main = document.querySelector("main");
             const parrafoLocalidad = document.createElement("p");
             parrafoLocalidad.textContent = "Localidad: " + c.getNombreCiudad();
-            document.body.appendChild(parrafoLocalidad);
+            main.appendChild(parrafoLocalidad);
             c.getInfoSecundaria();
             c.getCoordenadas();
-
             $(document).ready(function () {
-                const ciudad = new Ciudad();
-                ciudad.getMeteorologiaCarrera(function () {
-                    ciudad.procesarJSONCarrera();
-                    ciudad.verMeteoCarrera();
-                });
+                c.getMeteorologiaCarrera();
             });
-
-            $(document).ready(function () {
-                const ciudad = new Ciudad();
-                ciudad.getMeteorologiaEntrenos(function () {
-                    ciudad.procesarJSONEntrenos();
-                    ciudad.verMeteoEntrenos();
-                });
-            });
-            
         </script>
     </main>
 </body>
