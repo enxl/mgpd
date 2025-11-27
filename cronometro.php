@@ -16,17 +16,20 @@
         }
 
         public function arrancar() {
-            $this->inicio = time();
+            $this->inicio = microtime(true);
         }
 
         public function parar() {
-            $ahora = time();
+            $ahora = microtime(true);
             $this->tiempo = $ahora - $this->inicio;
         }
 
         public function mostrar() {
-            $tiempo_formateado = date('i:s', $this->tiempo);
-            return $tiempo_formateado;
+            $totalSegundos = $this->tiempo;
+            $minutos = floor($totalSegundos / 60);
+            $segundos = floor($totalSegundos % 60);
+            $decimas = floor(($totalSegundos - floor($totalSegundos)) * 10);
+            return sprintf("%02d:%02d.%01d", $minutos, $segundos, $decimas);
         }
     
     }
