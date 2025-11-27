@@ -1,4 +1,5 @@
 class Noticias {
+    
     busqueda;
     #url;
     #apiToken = "zU1AObywJGoylVOplHw0uOFONijhq9ng8KtMQexL"
@@ -7,7 +8,6 @@ class Noticias {
     constructor() {
         this.busqueda = "";
         this.#url = "https://api.thenewsapi.com/v1/news/";
-
     }
 
     async buscar() {

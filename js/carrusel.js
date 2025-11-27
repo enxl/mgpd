@@ -55,8 +55,6 @@ class Carrusel {
         }
 
         this.#jsonProcesado = resultado;
-        $("p").html(`Procesadas ${this.#jsonProcesado.imagenes.length} fotografías.`);
-        $("pre").text(JSON.stringify(this.#jsonProcesado, null, 2));
     }
 
     mostrarFotografias() {
@@ -95,6 +93,4 @@ class Carrusel {
             alt: siguiente.titulo
         });
     }
-
-
 }
