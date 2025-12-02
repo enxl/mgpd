@@ -66,7 +66,7 @@
     <meta name="description" content="Pruebas de usabilidad de la web MotoGP-Desktop." />
     <meta name="keywords" content="MotoGP, Ayuda" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="multimedia/favicon.ico" />
+    <link rel="icon" href="../multimedia/favicon.ico" />
     <link rel="stylesheet" type="text/css" href="../estilo/estilo.css" />
     <link rel="stylesheet" type="text/css" href="../estilo/layout.css" />
 </head>
