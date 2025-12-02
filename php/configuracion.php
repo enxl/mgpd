@@ -18,7 +18,7 @@
         public function reiniciarBD() {
             $tablas = $this->obtenerTodasLasTablas();
 
-            if(count($tablas) == 0) {
+            if(empty($tablas)) {
                 echo "<p>No se han encontrado tablas.</p>";
                 return;
             }
@@ -38,16 +38,28 @@
 
 
         public function exportarBD() {
-
+            // TODO;
         }
 
         public function eliminarBD() {
-            $consulta = "DROP DATABASE IF EXISTS uo287616_db";
-            if($this->db->query(query)) {
-                 echo "<p>Base de datos eliminada correctamente.</p>";
+
+            $this->db->close();
+            $db = new mysqli($this->servername, $this->username, $this->password);
+
+            if ($db->connect_error) {
+                exit("<p>ERROR de conexión: " . $db->connect_error . "</p>");
+            }
+
+            $query = "DROP DATABASE `$this->dbname`;";
+
+            if ($db->query($query)) {
+                echo "<p>Eliminada la base de datos '$this->dbname'</p>";
             } else {
-                 echo "<p>Error eliminando base de datos: " . $this->db->error . "</p>";
-            };
+                echo "<p>No se ha podido eliminar la base de datos '$this->dbname'. Error: " . $db->error . "</p>";
+            }
+
+            $db->close();
+
         }
 
         public function obtenerTodasLasTablas(): array {
