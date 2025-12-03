@@ -59,6 +59,11 @@ body>div {
     }
 
     /* Especificidad -> 001 */
+    img {
+        max-width: fit-content;
+    }
+
+    /* Especificidad -> 001 */
     audio {
         width: 80%;
     }

@@ -1,10 +1,15 @@
 <?php
+require_once "Db.php";
+require_once "cronometro.php";
+
 class Formulario
 {
-
     private $preguntas;
     private $errores;
     private $respuestas = [];
+    private $db;
+
+    private $cronometro;
 
     public function __construct()
     {
@@ -20,6 +25,9 @@ class Formulario
             "¿Cuántos puntos hizo Fabio Di Giannantonio en 2024?",
             "Nombre un equipo que aparezca en el juego de cartas."
         );
+        $this->cronometro = new Cronometro();
+        $this->cronometro->arrancar();
+        $this->db = new Db();
         $this->guardarRespuestas();
     }
 
@@ -43,44 +51,59 @@ class Formulario
 
     private function guardarEnBD()
     {
-        $id_usuario = 1;       
-        $id_dispositivo = 1;   
-        $tiempo = 0;           
-        $completada = 1;
-        $comentarios = implode("; ", $this->respuestas);
-        $propuestas = "";      
+        $this->cronometro->parar();
+        $tiempo = $this->cronometro->getTiempoSegundos();
+
+        session_start();
+
+        $idUsuario = $_SESSION["id_usuario"] ?? null;
+        $idDispositivo = $_SESSION["id_dispositivo"] ?? null;
+
+        if (!$idUsuario || !$idDispositivo) {
+            exit("<p>Error: no se encontraron IDs de sesión.</p>");
+        }
+
+        $completada = true;
+        $comentarios = "";
+        $propuestas = "";
         $valoracion = 5;
 
-        $db = new mysqli("localhost", "DBUSER2025", "DBPSWD2025", "UO287616_DB");
-        $stmt = $db->prepare("INSERT INTO resultados 
-            (id_usuario, id_dispositivo, tiempo, completada, comentarios_usuario, propuestas_mejora, valoracion_usuario) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("iidissi", $id_usuario, $id_dispositivo, $tiempo, $completada, $comentarios, $propuestas, $valoracion);
-        $stmt->execute();
-        $stmt->close();
+        $idResultado = $this->db->insertarResultado(
+            $idUsuario,
+            $idDispositivo,
+            $tiempo,
+            $completada,
+            $comentarios,
+            $propuestas,
+            $valoracion
+        );
+
+        $_SESSION["id_resultado"] = $idResultado;
+        header("Location: observaciones.php");
+        exit();
     }
 
     public function cargarFormulario()
     {
         echo "<form method='POST' action='#'>";
-
         foreach ($this->preguntas as $i => $pregunta) {
             $num = $i + 1;
             $valor = isset($this->respuestas[$num]) ? htmlspecialchars($this->respuestas[$num]) : "";
             $error = isset($this->errores[$num]) ? "<span>{$this->errores[$num]}</span>" : "";
             echo "
-                    <p>$num. $pregunta</p>
-                    <p>
-                        <input type='text' name='p$num' value='$valor'/>
-                        $error
-                    </p>
-                ";
+                <p>$num. $pregunta</p>
+                <p>
+                    <input type='text' name='p$num' value='$valor'/>
+                    $error
+                </p>
+            ";
         }
         echo "<p><input type='submit' value='Enviar'/></p>";
         echo "</form>";
     }
 }
 ?>
+
 <!DOCTYPE HTML>
 <html lang="es">
 

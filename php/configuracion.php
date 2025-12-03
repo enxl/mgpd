@@ -1,5 +1,6 @@
 <?php
-class Configuracion {
+class Configuracion
+{
     private $servername = "localhost";
     private $username = "DBUSER2025";
     private $password = "DBPSWD2025";
@@ -7,19 +8,22 @@ class Configuracion {
 
     private $db;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = new mysqli($this->servername, $this->username, $this->password);
         if ($this->db->connect_error) {
             exit("<p>Error conectando a MySQL: " . $this->db->connect_error . "</p>");
         }
     }
 
-    private function existeBD(): bool {
+    private function existeBD(): bool
+    {
         $resultado = $this->db->query("SHOW DATABASES LIKE '$this->dbname'");
         return ($resultado && $resultado->num_rows > 0);
     }
 
-    public function crearBD(): string {
+    public function crearBD(): string
+    {
 
         if ($this->existeBD()) {
             return "La base de datos ya existe.";
@@ -48,8 +52,8 @@ class Configuracion {
 
             "CREATE TABLE IF NOT EXISTS resultados (
                 id_resultado INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-                id_usuario INT UNSIGNED NOT NULL,
-                id_dispositivo TINYINT UNSIGNED NOT NULL,
+                id_usuario INT UNSIGNED,
+                id_dispositivo TINYINT UNSIGNED,
                 tiempo FLOAT NOT NULL,
                 completada BOOLEAN NOT NULL,
                 comentarios_usuario TEXT,
@@ -64,7 +68,13 @@ class Configuracion {
                 id_resultado INT UNSIGNED NOT NULL,
                 comentario TEXT NOT NULL,
                 FOREIGN KEY (id_resultado) REFERENCES resultados(id_resultado)
-            ) ENGINE=InnoDB;"
+            ) ENGINE=InnoDB;",
+
+            "INSERT INTO usuarios (profesion, edad, genero, pericia_informatica) 
+            VALUES ('Tester', 30, 'No especificado', 8);",
+            
+            "INSERT INTO dispositivos (nombre) 
+            VALUES ('PC de Pruebas');"
         ];
 
         foreach ($scripts as $sql) {
@@ -76,7 +86,8 @@ class Configuracion {
         return "Base de datos y tablas creadas correctamente.";
     }
 
-    public function reiniciarBD(): string {
+    public function reiniciarBD(): string
+    {
         if (!$this->existeBD()) {
             return "La base de datos no existe.";
         }
@@ -96,7 +107,8 @@ class Configuracion {
         return "La base de datos se ha reiniciado correctamente.";
     }
 
-    public function eliminarBD(): string {
+    public function eliminarBD(): string
+    {
         if (!$this->existeBD()) {
             return "La base de datos no existe.";
         }
@@ -108,7 +120,8 @@ class Configuracion {
         }
     }
 
-    public function exportarBD(): string {
+    public function exportarBD(): string
+    {
         if (!$this->existeBD()) {
             return "La base de datos no existe.";
         }
@@ -116,7 +129,8 @@ class Configuracion {
         return "Función de exportar BD no implementada todavía.";
     }
 
-    public function obtenerTodasLasTablas(): array {
+    public function obtenerTodasLasTablas(): array
+    {
         $resultado = $this->db->query("SHOW TABLES");
         $tablas = [];
         while ($fila = $resultado->fetch_array()) {

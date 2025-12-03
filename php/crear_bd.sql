@@ -20,8 +20,8 @@ CREATE TABLE dispositivos (
 
 CREATE TABLE resultados (
     id_resultado INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    id_usuario INT UNSIGNED NOT NULL,
-    id_dispositivo TINYINT UNSIGNED NOT NULL,
+    id_usuario INT UNSIGNED,
+    id_dispositivo TINYINT UNSIGNED,
     tiempo FLOAT NOT NULL,
     completada BOOLEAN NOT NULL,
     comentarios_usuario TEXT,
