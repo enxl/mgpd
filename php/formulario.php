@@ -13,6 +13,8 @@ class Formulario
 
     public function __construct()
     {
+        session_start();
+
         $this->preguntas = array(
             "¿Qué número de dorsal tiene Fabio Di Giannantonio?",
             "¿Por cuántos equipos pasó Fabio Di Giannantonio?",
@@ -25,11 +27,22 @@ class Formulario
             "¿Cuántos puntos hizo Fabio Di Giannantonio en 2024?",
             "Nombre un equipo que aparezca en el juego de cartas."
         );
-        $this->cronometro = new Cronometro();
-        $this->cronometro->arrancar();
+
         $this->db = new Db();
-        $this->guardarRespuestas();
+        $this->cronometro = new Cronometro();
+
+        if (!isset($_SESSION['cronometro_inicio'])) {
+            $this->cronometro->arrancar();
+            $_SESSION['cronometro_inicio'] = $this->cronometro->getTiempoInicio();
+        } else {
+            $this->cronometro->setTiempoInicio($_SESSION['cronometro_inicio']);
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->guardarRespuestas();
+        }
     }
+
 
     private function guardarRespuestas()
     {
@@ -49,39 +62,34 @@ class Formulario
         }
     }
 
-    private function guardarEnBD()
-    {
-        $this->cronometro->parar();
-        $tiempo = $this->cronometro->getTiempoSegundos();
+private function guardarEnBD()
+{
+    $this->cronometro->parar();
+    $tiempo = $this->cronometro->getTiempoSegundos();
 
-        session_start();
+    $idUsuario = $_SESSION["id_usuario"] ?? null;
+    $idDispositivo = $_SESSION["id_dispositivo"] ?? null;
 
-        $idUsuario = $_SESSION["id_usuario"] ?? null;
-        $idDispositivo = $_SESSION["id_dispositivo"] ?? null;
-
-        if (!$idUsuario || !$idDispositivo) {
-            exit("<p>Error: no se encontraron IDs de sesión.</p>");
-        }
-
-        $completada = true;
-        $comentarios = "";
-        $propuestas = "";
-        $valoracion = 5;
-
-        $idResultado = $this->db->insertarResultado(
-            $idUsuario,
-            $idDispositivo,
-            $tiempo,
-            $completada,
-            $comentarios,
-            $propuestas,
-            $valoracion
-        );
-
-        $_SESSION["id_resultado"] = $idResultado;
-        header("Location: observaciones.php");
-        exit();
+    if (!$idUsuario || !$idDispositivo) {
+        exit("<p>Error: no se encontraron IDs de sesión.</p>");
     }
+
+    // Guardar resultado en BD
+    $idResultado = $this->db->insertarResultado(
+        $idUsuario,
+        $idDispositivo,
+        $tiempo,
+        true,
+        "",
+        "",
+        5
+    );
+
+    unset($_SESSION['cronometro_inicio']); 
+    $_SESSION["id_resultado"] = $idResultado;
+    header("Location: observaciones.php");
+    exit();
+}
 
     public function cargarFormulario()
     {

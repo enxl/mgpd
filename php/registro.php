@@ -38,7 +38,6 @@ class Registro
             else
                 $this->valores["pericia"] = intval($_POST["pericia"]);
 
-            // Solo permite ordenador, tablet o móvil
             $dispositivoValido = ["Ordenador", "Tablet", "Móvil"];
             if (empty($_POST["dispositivo"]) || !in_array($_POST["dispositivo"], $dispositivoValido)) {
                 $this->errores["dispositivo"] = "Seleccione un dispositivo válido.";

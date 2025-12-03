@@ -31,9 +31,17 @@ class Cronometro
         return sprintf("%02d:%02d.%01d", $minutos, $segundos, $decimas);
     }
 
+    public function getTiempoInicio()    {
+        return $this->inicio;
+    }
+
+    public function setTiempoInicio($ini) {
+        $this->inicio = $ini;
+    }
+
     public function getTiempoSegundos()
     {
-        return $this->tiempo;
+        return floor($this->tiempo * 100) / 100;
     }
 
 }

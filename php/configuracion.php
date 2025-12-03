@@ -72,7 +72,7 @@ class Configuracion
 
             "INSERT INTO usuarios (profesion, edad, genero, pericia_informatica) 
             VALUES ('Tester', 30, 'No especificado', 8);",
-            
+
             "INSERT INTO dispositivos (nombre) 
             VALUES ('PC de Pruebas');"
         ];
@@ -126,8 +126,47 @@ class Configuracion
             return "La base de datos no existe.";
         }
 
-        return "Función de exportar BD no implementada todavía.";
+        $this->db->select_db($this->dbname);
+
+        $query = "SELECT * FROM resultados";
+        $resultado = $this->db->query($query);
+
+        if (!$resultado) {
+            return "Error consultando la tabla resultados: " . $this->db->error;
+        }
+
+        if ($resultado->num_rows === 0) {
+            return "No se han encontrado datos para exportar.";
+        }
+
+        $filename = "resultados_" . date("Ymd_His") . ".csv";
+
+        $file = fopen($filename, 'w');
+        if ($file === false) {
+            return "No se pudo crear el archivo CSV.";
+        }
+
+        $fields = $resultado->fetch_fields();
+        $headers = [];
+        foreach ($fields as $field) {
+            $headers[] = $field->name;
+        }
+        fputcsv($file, $headers);
+
+        while ($row = $resultado->fetch_assoc()) {
+            foreach ($row as $key => $value) {
+                if ($value === null || $value === '') {
+                    $row[$key] = 'Desconocido';
+                }
+            }
+            fputcsv($file, $row);
+        }
+
+        fclose($file);
+
+        return "Exportación completada. Archivo generado: $filename";
     }
+
 
     public function obtenerTodasLasTablas(): array
     {
