@@ -115,7 +115,7 @@ class Registro
             </select>
             " . e($this->errores, "dispositivo") . "<br><br>
 
-            <input type='submit' value='Comenzar encuesta'>
+            <input type='submit' value='Iniciar prueba'>
         </form>";
     }
 }

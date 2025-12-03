@@ -106,7 +106,7 @@ private function guardarEnBD()
                 </p>
             ";
         }
-        echo "<p><input type='submit' value='Enviar'/></p>";
+        echo "<p><input type='submit' value='Terminar prueba'/></p>";
         echo "</form>";
     }
 }
