@@ -76,6 +76,20 @@ class Db
         return $id;
     }
 
+    public function anadirValoracionUsuario($id_resultado, $valoracion_usuario)
+    {
+        $stmt = $this->db->prepare("
+        UPDATE resultados
+        SET valoracion_usuario = ?
+        WHERE id_resultado = ?
+    ");
+        $stmt->bind_param("ii", $valoracion_usuario, $id_resultado);
+        $stmt->execute();
+        $ok = $stmt->affected_rows > 0;
+        $stmt->close();
+        return $ok;
+    }
+
     public function cerrar()
     {
         $this->db->close();
