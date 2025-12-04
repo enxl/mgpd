@@ -19,12 +19,12 @@ class Formulario
             "¿Qué número de dorsal tiene Fabio Di Giannantonio?",
             "¿Por cuántos equipos pasó Fabio Di Giannantonio?",
             "¿Qué es, según esta web, una 'chicane'?",
-            "¿Quién ganó la carrera de Sachsenring 2024?",
-            "¿Quién quedó como segundo clasificado en el mundial tras la carrera?",
+            "¿A qué hora fue la carrera de Sachsenring 2024?",
+            "¿En qué posición quedó Fabio Di Giannantonio en 2024?",
             "¿Cuántos habitantes tiene la localidad cercana al circuto de Sachsenring?",
             "¿Qué temperatura hizo el día de la carrera?",
             "¿Hubo mas de un 50% de humedad en los días de entrenamiento?",
-            "¿Cuántos puntos hizo Fabio Di Giannantonio en 2024?",
+            "Introduzca el nombre de una noticia que aparezca en el sitio.",
             "Nombre un equipo que aparezca en el juego de cartas."
         );
 
