@@ -68,13 +68,7 @@ class Configuracion
                 id_resultado INT UNSIGNED NOT NULL,
                 comentario TEXT NOT NULL,
                 FOREIGN KEY (id_resultado) REFERENCES resultados(id_resultado)
-            ) ENGINE=InnoDB;",
-
-            "INSERT INTO usuarios (profesion, edad, genero, pericia_informatica) 
-            VALUES ('Tester', 30, 'No especificado', 8);",
-
-            "INSERT INTO dispositivos (nombre) 
-            VALUES ('PC de Pruebas');"
+            ) ENGINE=InnoDB;"
         ];
 
         foreach ($scripts as $sql) {
@@ -125,47 +119,69 @@ class Configuracion
         if (!$this->existeBD()) {
             return "La base de datos no existe.";
         }
-
+    
         $this->db->select_db($this->dbname);
-
-        $query = "SELECT * FROM resultados";
-        $resultado = $this->db->query($query);
-
-        if (!$resultado) {
-            return "Error consultando la tabla resultados: " . $this->db->error;
+    
+        // Obtener todas las tablas de la BD
+        $tablesResult = $this->db->query("SHOW TABLES");
+        if (!$tablesResult) {
+            return "Error consultando las tablas: " . $this->db->error;
         }
-
-        if ($resultado->num_rows === 0) {
-            return "No se han encontrado datos para exportar.";
+    
+        if ($tablesResult->num_rows === 0) {
+            return "No hay tablas para exportar.";
         }
-
-        $filename = "resultados_" . date("Ymd_His") . ".csv";
-
-        $file = fopen($filename, 'w');
-        if ($file === false) {
-            return "No se pudo crear el archivo CSV.";
-        }
-
-        $fields = $resultado->fetch_fields();
-        $headers = [];
-        foreach ($fields as $field) {
-            $headers[] = $field->name;
-        }
-        fputcsv($file, $headers);
-
-        while ($row = $resultado->fetch_assoc()) {
-            foreach ($row as $key => $value) {
-                if ($value === null || $value === '') {
-                    $row[$key] = 'Desconocido';
-                }
+    
+        $archivosGenerados = [];
+    
+        while ($tableRow = $tablesResult->fetch_array()) {
+            $tableName = $tableRow[0];
+    
+            $query = "SELECT * FROM `$tableName`";
+            $resultado = $this->db->query($query);
+    
+            if (!$resultado) {
+                return "Error consultando la tabla $tableName: " . $this->db->error;
             }
-            fputcsv($file, $row);
+    
+            if ($resultado->num_rows === 0) {
+                continue;
+            }
+    
+            $filename = $tableName . "_" . date("Ymd_His") . ".csv";
+    
+            $file = fopen($filename, 'w');
+            if ($file === false) {
+                return "No se pudo crear el archivo CSV para la tabla $tableName.";
+            }
+    
+            $fields = $resultado->fetch_fields();
+            $headers = [];
+            foreach ($fields as $field) {
+                $headers[] = $field->name;
+            }
+            fputcsv($file, $headers);
+    
+            while ($row = $resultado->fetch_assoc()) {
+                foreach ($row as $key => $value) {
+                    if ($value === null || $value === '') {
+                        $row[$key] = 'Desconocido';
+                    }
+                }
+                fputcsv($file, $row);
+            }
+    
+            fclose($file);
+            $archivosGenerados[] = $filename;
         }
-
-        fclose($file);
-
-        return "Exportación completada. Archivo generado: $filename";
+    
+        if (empty($archivosGenerados)) {
+            return "No se exportó ningún dato porque todas las tablas estaban vacías.";
+        }
+    
+        return "Exportación completada. Archivos generados:\n" . implode("\n", $archivosGenerados);
     }
+    
 
 
     public function obtenerTodasLasTablas(): array
