@@ -31,7 +31,7 @@ class Html(object):
 
     # Añade un enlace, indicando la URL.
     def addLink(self, href, titleAttr):
-        p = ET.SubElement(self.main, 'p')  # crea un párrafo
+        p = ET.SubElement(self.main, 'p')
         a = ET.SubElement(p, 'a', href=href.strip(), target="_blank", title=titleAttr)
         a.text = titleAttr.strip()
 
