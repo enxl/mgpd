@@ -30,10 +30,10 @@ class Html(object):
             ET.SubElement(ul, 'li').text = item
 
     # Añade un enlace, indicando la URL.
-    def addLink(self, href):
+    def addLink(self, href, titleAttr):
         p = ET.SubElement(self.main, 'p')  # crea un párrafo
-        a = ET.SubElement(p, 'a', href=href.strip(), target="_blank")
-        a.text = href.strip()
+        a = ET.SubElement(p, 'a', href=href.strip(), target="_blank", title=titleAttr)
+        a.text = titleAttr.strip()
 
     # Añade una imagen. Se pasa la ruta y el texto alternativo.
     def addImage(self, src, alt_text):
@@ -82,7 +82,6 @@ def toHtml(archivoXML):
     ns = {'ns': 'http://www.uniovi.es'}
     html = Html()
 
-    # Datos extraídos del árbol (fichero xml)
     nombre = root.find('.//ns:nombre', ns)
     longitud = root.find('.//ns:longitud-circuito', ns)
     anchura = root.find('.//ns:anchura-media', ns)
@@ -97,7 +96,6 @@ def toHtml(archivoXML):
     video = root.find('.//ns:videos/ns:video', ns)
     clasificados = root.findall('.//ns:clasificados/ns:clasificado', ns)
 
-    # Creación del HTML.
     html.addTitle(nombre.text, 2)
     html.addTitle("Datos generales", 3)
     html.addParagraph(f"Longitud del circuito: {longitud.text} {longitud.get('unidades')}")
@@ -134,7 +132,7 @@ def toHtml(archivoXML):
 
     html.addTitle("Referencias", 3)
     for ref in referencias:
-        html.addLink(ref.text.strip())
+        html.addLink(ref.text.strip(), ref.get('title'))
 
     html.escribir("InfoCircuito.html")
     print("Operación exitosa!")

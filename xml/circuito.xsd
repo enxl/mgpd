@@ -25,8 +25,6 @@
 	</xs:element>
 	<xs:element name="nombre" type="xs:string" />
 
-	<!-- Longitud del circuito y anchura media: Tipos para poder restringir los valores y a su vez
-	poder contener el atributo unidades.-->
 	<xs:simpleType name="longitudPositiva">
 		<xs:restriction base="xs:decimal">
 			<xs:minExclusive value="0" />
@@ -65,7 +63,15 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="referencia" type="xs:string" />
+	<xs:element name="referencia">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute name="title" type="xs:string" use="required" />
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
 	<xs:element name="fotografias">
 		<xs:complexType>
 			<xs:sequence>
@@ -139,7 +145,6 @@
 		</xs:restriction>
 	</xs:simpleType>
 
-	<!-- Tipos complejos: restriciones y atributo unidades de  longitud y latitud -->
 	<xs:complexType name="tipoLongitud">
 		<xs:simpleContent>
 			<xs:extension base="longitudDecimal">

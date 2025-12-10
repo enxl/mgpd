@@ -14,10 +14,10 @@
     <pais>Alemania</pais>
     <patrocinador>Liqui Moly</patrocinador>
     <referencias>
-        <referencia>https://en.wikipedia.org/wiki/2025_German_motorcycle_Grand_Prix</referencia>
-        <referencia>
+        <referencia title="Artículo en Wikipedia">https://en.wikipedia.org/wiki/2025_German_motorcycle_Grand_Prix</referencia>
+        <referencia title="Descubre Sachsenring">
             https://rtrsports.com/es/blog/descubre-el-sachsenring-corazon-de-la-velocidad-alemana/</referencia>
-        <referencia>https://www.redbull.com/es-es/datos-de-interes-sachsenring</referencia>
+        <referencia title="Datos de interés de Sachsenring">https://www.redbull.com/es-es/datos-de-interes-sachsenring</referencia>
     </referencias>
     <fotografias>
         <fotografia alt="Vista aérea del circuito de Sachsenring">multimedia/sachsenring1.jpg</fotografia>
