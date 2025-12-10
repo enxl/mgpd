@@ -122,7 +122,6 @@ class Configuracion
     
         $this->db->select_db($this->dbname);
     
-        // Obtener todas las tablas de la BD
         $tablesResult = $this->db->query("SHOW TABLES");
         if (!$tablesResult) {
             return "Error consultando las tablas: " . $this->db->error;
@@ -148,7 +147,7 @@ class Configuracion
                 continue;
             }
     
-            $filename = $tableName . "_" . date("Ymd_His") . ".csv";
+            $filename = "csv/" . $tableName . "_" . date("Ymd_His") . ".csv";
     
             $file = fopen($filename, 'w');
             if ($file === false) {
