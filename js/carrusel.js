@@ -21,24 +21,31 @@ class Carrusel {
 
     // Obtener fotos desde la API y guardarlas en #fotosJSON
     getFotografias(callback) {
-        $.ajax({
-            url: this.#url,
-            dataType: "jsonp",
-            data: {
-                tags: "sachsenring,motogp",
-                tagmode: "any",
-                format: "json"
-            },
-            success: (data) => {
-                this.#fotosJSON = data;
-                this.procesarJSONFotografias();
-                if (callback) callback(this.#jsonProcesado);
-            },
-            error: () => {
-                console.error("Error al obtener las imágenes de Flickr.");
+
+    const url = this.#url;
+    const parametros = {
+        tags: "sachsenring,motogp",
+        tagmode: "any",
+        format: "json"
+    };
+
+    $.ajax({
+        dataType: "jsonp",
+        url: url,
+        method: "GET",
+        data: parametros,
+        success: function (data) {
+            this.#fotosJSON = data;
+            this.procesarJSONFotografias();
+            if (callback) {
+                callback(this.#jsonProcesado);
             }
-        });
-    }
+        }.bind(this),
+        error: function () {
+            console.error("Error al obtener las imágenes de Flickr.");
+        }
+    });
+}
 
     procesarJSONFotografias() {
         if (!this.#fotosJSON) {
@@ -63,6 +70,8 @@ class Carrusel {
             return;
         }
 
+        let section = $("section:nth-of-type(1)");;
+
         let primeraImagen = this.#jsonProcesado.imagenes[0];
 
         let titulo = $("<h2>").text("Imágenes del circuito de Sachsenring");
@@ -73,7 +82,7 @@ class Carrusel {
 
         let elementos = titulo.add(imagen);
         let article = $("<article>").append(elementos);
-        $("main").append(article);
+        section.append(article);
 
         // Pasar galería fotos.
         setInterval(this.cambiarFotografia.bind(this), 3000);

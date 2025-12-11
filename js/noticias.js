@@ -38,6 +38,9 @@ class Noticias {
         }
 
         let noticias = this.#jsonAPI.data;
+        let section = $("section:nth-of-type(2)");
+        let titulo = $("<h2>").text("Noticias de MotoGP");
+        section.append(titulo);
 
         for (let noticia of noticias) {
             let article = $("<article>");
@@ -47,7 +50,7 @@ class Noticias {
             let fecha = $("<p>").text(`Fecha: ${new Date(noticia.published_at).toLocaleString()}`);
             let enlace = $("<a>").attr({ href: noticia.url, target: "_blank" }).text("Leer más");
             article.append(tituloNoticia, descripcion, fuente, fecha, enlace);
-            $("main").append(article);
+            section.append(article);
         }
     }
 }
