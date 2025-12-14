@@ -51,11 +51,6 @@ class Circuito {
         }
     }
 
-    #mostrarError(mensaje) {
-        var pError = document.createElement("p");
-        pError.textContent = mensaje;
-        document.body.appendChild(pError);
-    }
 }
 
 class CargadorSVG {
@@ -86,17 +81,12 @@ class CargadorSVG {
 
     #insertarArchivoSVG(svg) {
         const parser = new DOMParser();
-        let documentoSVG = parser.parseFromString(svg, 'image/svg+xml');
-        let main = document.getElementsByTagName("main")[0];
-        let elementoSVG = documentoSVG.documentElement;
+        var documentoSVG = parser.parseFromString(svg, 'image/svg+xml');
+        var main = document.getElementsByTagName("main")[0];
+        var elementoSVG = documentoSVG.documentElement;
         main.appendChild(elementoSVG);
     }
-
-    #mostrarError(mensaje) {
-        let pError = document.createElement("p");
-        pError.textContent = mensaje;
-        document.body.appendChild(pError);
-    }
+    
 }
 
 class CargadorKML {

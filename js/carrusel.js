@@ -22,37 +22,37 @@ class Carrusel {
     // Obtener fotos desde la API y guardarlas en #fotosJSON
     getFotografias(callback) {
 
-    const url = this.#url;
-    const parametros = {
-        tags: "sachsenring,motogp",
-        tagmode: "any",
-        format: "json"
-    };
+        const url = this.#url;
+        const parametros = {
+            tags: "sachsenring,motogp",
+            tagmode: "any",
+            format: "json"
+        };
 
-    $.ajax({
-        dataType: "jsonp",
-        url: url,
-        method: "GET",
-        data: parametros,
-        success: function (data) {
-            this.#fotosJSON = data;
-            this.procesarJSONFotografias();
-            if (callback) {
-                callback(this.#jsonProcesado);
+        $.ajax({
+            dataType: "jsonp",
+            url: url,
+            method: "GET",
+            data: parametros,
+            success: function (data) {
+                this.#fotosJSON = data;
+                this.procesarJSONFotografias();
+                if (callback) {
+                    callback(this.#jsonProcesado);
+                }
+            }.bind(this),
+            error: function () {
+                console.error("Error al obtener las imágenes de Flickr.");
             }
-        }.bind(this),
-        error: function () {
-            console.error("Error al obtener las imágenes de Flickr.");
-        }
-    });
-}
+        });
+    }
 
     procesarJSONFotografias() {
         if (!this.#fotosJSON) {
             console.error("No se ha obtenido el JSON.");
             return;
         }
-        let resultado = { imagenes: [] };
+        var resultado = { imagenes: [] };
         for (let i = 0; i < this.#fotosJSON.items.length && i < this.#maximo; i++) {
             let item = this.#fotosJSON.items[i];
             resultado.imagenes.push({
@@ -70,18 +70,18 @@ class Carrusel {
             return;
         }
 
-        let section = $("section:nth-of-type(1)");;
+        var section = $("section:nth-of-type(1)");;
 
-        let primeraImagen = this.#jsonProcesado.imagenes[0];
+        var primeraImagen = this.#jsonProcesado.imagenes[0];
 
-        let titulo = $("<h2>").text("Imágenes del circuito de Sachsenring");
-        let imagen = $("<img>").attr({
+        var titulo = $("<h2>").text("Imágenes del circuito de Sachsenring");
+        var imagen = $("<img>").attr({
             src: primeraImagen.url,
             alt: primeraImagen.titulo
         });
 
-        let elementos = titulo.add(imagen);
-        let article = $("<article>").append(elementos);
+        var elementos = titulo.add(imagen);
+        var article = $("<article>").append(elementos);
         section.append(article);
 
         // Pasar galería fotos.
@@ -95,7 +95,7 @@ class Carrusel {
 
         // Al acabar volver a primera foto.
         this.#actual = (this.#actual + 1) % this.#jsonProcesado.imagenes.length;
-        let siguiente = this.#jsonProcesado.imagenes[this.#actual];
+        var siguiente = this.#jsonProcesado.imagenes[this.#actual];
 
         $("main article img").attr({
             src: siguiente.url,

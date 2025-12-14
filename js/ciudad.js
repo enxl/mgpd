@@ -38,11 +38,11 @@ class Ciudad {
     }
 
     getInfoSecundaria() {
-        const main = document.querySelector("main");
-        const lista = document.createElement("ul");
-        const liGentilicio = document.createElement("li");
+        var main = document.querySelector("main");
+        var lista = document.createElement("ul");
+        var liGentilicio = document.createElement("li");
         liGentilicio.textContent = "Gentilicio: " + this.#gentilicio;
-        const liPoblacion = document.createElement("li");
+        var liPoblacion = document.createElement("li");
         liPoblacion.textContent = "Población: " + this.#poblacion + " habitantes";
         lista.appendChild(liGentilicio);
         lista.appendChild(liPoblacion);
@@ -50,8 +50,8 @@ class Ciudad {
     }
 
     getCoordenadas() {
-        const main = document.querySelector("main");
-        const parrafo = document.createElement("p");
+        var main = document.querySelector("main");
+        var parrafo = document.createElement("p");
         parrafo.textContent = "Coordenadas: (" + this.#latitud + ", " + this.#longitud + ")";
         main.appendChild(parrafo);
     }
@@ -220,10 +220,10 @@ class Ciudad {
         const datos = this.#jsonProcesadoEntrenos;
         if (!datos) return;
 
-        let meteoEntrenosSection = $("<section>");
+        var meteoEntrenosSection = $("<section>");
         meteoEntrenosSection.append($("<h3>").text("Meteorología de los días de entrenamientos (promedio)"));
 
-        for (const dia in datos) {
+        for (let dia in datos) {
             meteoEntrenosSection.append($("<h4>").text("Día: " + dia));
             meteoEntrenosSection.append($("<p>").text("Temperatura: " + datos[dia].temperatura + " °C"));
             meteoEntrenosSection.append($("<p>").text("Lluvia: " + datos[dia].lluvia + " mm"));
