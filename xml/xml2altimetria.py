@@ -128,47 +128,58 @@ def toSVG(archivoXML):
     try:
         tree = ET.parse(archivoXML)
     except IOError:
-        print ('No se encuentra el archivo ', archivoXML)
+        print('No se encuentra el archivo ', archivoXML)
         exit()
     except ET.ParseError:
         print("Error procesando en el archivo XML = ", archivoXML)
         exit()
 
     root = tree.getroot()
-    namespace = {'ns': 'http://www.uniovi.es'}
-    puntos = root.findall('.//ns:punto', namespace)
+    ns = '{http://www.uniovi.es}'
+
+    puntos = root.findall(f'.//{ns}punto')
+
     puntos_svg = []
     distancia_recorrida = 0
     escala = 0.1
     puntos_string = ""
 
     for punto in puntos:
-        distancia_punto_texto = punto.find('ns:distancia', namespace)
-        distancia_punto = float(distancia_punto_texto.text.strip())
-        distancia_recorrida += distancia_punto
-        coords_punto = punto.find('ns:coordenadas', namespace)
-        altitud_punto_texto = coords_punto.find('ns:altitud', namespace)
-        altitud_punto = float(altitud_punto_texto.text.strip())
-        puntos_svg.append((distancia_recorrida * escala, altitud_punto))
+        distancia_punto = float(
+            punto.find(f'{ns}distancia').text
+        )
 
+        altitud_punto = float(
+            punto.find(f'{ns}coordenadas/{ns}altitud').text
+        )
+
+        distancia_recorrida += distancia_punto
+        puntos_svg.append((distancia_recorrida * escala, altitud_punto))
 
     for x, y in puntos_svg:
         puntos_string += f"{int(x)},{int(y)} "
 
-
-    # Cerrar la polilínea
     altura_base = 400
     x_inicio = int(puntos_svg[0][0])
     x_final = int(puntos_svg[-1][0])
-    puntos_string += f"{x_final},{altura_base} {x_inicio},{altura_base} {x_inicio},{int(puntos_svg[0][1])}"
+
+    puntos_string += (
+        f"{x_final},{altura_base} "
+        f"{x_inicio},{altura_base} "
+        f"{x_inicio},{int(puntos_svg[0][1])}"
+    )
 
     altimetria_svg = Svg()
-    altimetria_svg.addPolyline(puntos_string.strip(),
-                               stroke="red",
-                               strokeWith="3",
-                               fill="#EAFF00")
+    altimetria_svg.addPolyline(
+        puntos_string.strip(),
+        stroke="red",
+        strokeWith="3",
+        fill="#EAFF00"
+    )
+
     altimetria_svg.escribir("altimetria.svg")
     print("Operación Exitosa!")
+
 
 toSVG(input("Introduzca nombre fichero XML: "))
 
