@@ -91,22 +91,25 @@ def toKML(archivoXML):
     try:
         tree = ET.parse(archivoXML)
     except IOError:
-        print ('No se encuentra el archivo ', archivoXML)
+        print('No se encuentra el archivo ', archivoXML)
         exit()
     except ET.ParseError:
         print("Error procesando en el archivo XML = ", archivoXML)
         exit()
 
     root = tree.getroot()
-    namespace = {'ns': 'http://www.uniovi.es'}
-    puntos = root.findall('.//ns:punto', namespace)
+    ns = '{http://www.uniovi.es}'
+
+    puntos = root.findall(f'.//{ns}punto')
     kml_coordenadas = ''
 
     for punto in puntos:
-        coords = punto.find('ns:coordenadas', namespace)
-        lon = coords.find('ns:longitud', namespace).text
-        lat = coords.find('ns:latitud', namespace).text
-        alt = coords.find('ns:altitud', namespace).text
+        coords = punto.find(f'{ns}coordenadas')
+
+        lon = coords.find(f'{ns}longitud').text
+        lat = coords.find(f'{ns}latitud').text
+        alt = coords.find(f'{ns}altitud').text
+
         kml_coordenadas += f"{lon},{lat},{alt}\n"
 
     kml = Kml()
@@ -114,13 +117,15 @@ def toKML(archivoXML):
         nombre='Sachsenring',
         extrude='1',
         tesela='1',
-        listaCoordenadas = kml_coordenadas.strip(),
+        listaCoordenadas=kml_coordenadas.strip(),
         modoAltitud='absolute',
         color='ff0000ff',
-        ancho='5')
+        ancho='5'
+    )
 
     kml.escribir('circuito.kml')
     print('Operación exitosa!')
+
 
 toKML(input("Introduzca nombre fichero XML: "))
 

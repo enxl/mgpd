@@ -79,39 +79,43 @@ def toHtml(archivoXML):
         exit()
 
     root = tree.getroot()
-    ns = {'ns': 'http://www.uniovi.es'}
+    ns = '{http://www.uniovi.es}'
     html = Html()
 
-    nombre = root.find('.//ns:nombre', ns)
-    longitud = root.find('.//ns:longitud-circuito', ns)
-    anchura = root.find('.//ns:anchura-media', ns)
-    fecha = root.findtext('.//ns:fecha', namespaces=ns)
-    hora = root.findtext('.//ns:hora', namespaces=ns)
-    vueltas = root.findtext('.//ns:vueltas', namespaces=ns)
-    localidad = root.findtext('.//ns:localidad', namespaces=ns)
-    pais = root.findtext('.//ns:pais', namespaces=ns)
-    patrocinador = root.findtext('.//ns:patrocinador', namespaces=ns)
-    referencias = root.findall('.//ns:referencias/ns:referencia', ns)
-    fotos = root.findall('.//ns:fotografias/ns:fotografia', ns)
-    video = root.find('.//ns:videos/ns:video', ns)
-    clasificados = root.findall('.//ns:clasificados/ns:clasificado', ns)
+    nombre = root.find(f'.//{ns}nombre')
+    longitud = root.find(f'.//{ns}longitud-circuito')
+    anchura = root.find(f'.//{ns}anchura-media')
+    fecha = root.find(f'.//{ns}fecha')
+    hora = root.find(f'.//{ns}hora')
+    vueltas = root.find(f'.//{ns}vueltas')
+    localidad = root.find(f'.//{ns}localidad')
+    pais = root.find(f'.//{ns}pais')
+    patrocinador = root.find(f'.//{ns}patrocinador')
+
+    referencias = root.findall(f'.//{ns}referencias/{ns}referencia')
+    fotos = root.findall(f'.//{ns}fotografias/{ns}fotografia')
+    video = root.find(f'.//{ns}videos/{ns}video')
+    clasificados = root.findall(f'.//{ns}clasificados/{ns}clasificado')
 
     html.addTitle(nombre.text, 2)
+
     html.addTitle("Datos generales", 3)
-    html.addParagraph(f"Longitud del circuito: {longitud.text} {longitud.get('unidades')}")
-    html.addParagraph(f"Anchura media: {anchura.text} {anchura.get('unidades')}")
-    html.addParagraph(f"Fecha: {fecha}")
-    html.addParagraph(f"Hora española: {hora}")
-    html.addParagraph(f"Número de vueltas: {vueltas}")
-    html.addParagraph(f"Localidad: {localidad}")
-    html.addParagraph(f"País: {pais}")
-    html.addParagraph(f"Patrocinador principal: {patrocinador}")
+    html.addParagraph(
+        f"Longitud del circuito: {longitud.text} {longitud.get('unidades')}"
+    )
+    html.addParagraph(
+        f"Anchura media: {anchura.text} {anchura.get('unidades')}"
+    )
+    html.addParagraph(f"Fecha: {fecha.text}")
+    html.addParagraph(f"Hora española: {hora.text}")
+    html.addParagraph(f"Número de vueltas: {vueltas.text}")
+    html.addParagraph(f"Localidad: {localidad.text}")
+    html.addParagraph(f"País: {pais.text}")
+    html.addParagraph(f"Patrocinador principal: {patrocinador.text}")
 
     html.addTitle("Galería de imágenes", 3)
     for foto in fotos:
-        src = foto.text
-        alt = foto.get('alt')
-        html.addImage(src, alt)
+        html.addImage(foto.text, foto.get('alt'))
 
     html.addTitle("Videos del circuito", 3)
     if video is not None:
@@ -125,10 +129,12 @@ def toHtml(archivoXML):
         lista_clasificados.append(f"{posicion}º {piloto}")
     html.addList(lista_clasificados)
 
-    vencedor = root.find('.//ns:vencedor', ns)
+    vencedor = root.find(f'.//{ns}vencedor')
     if vencedor is not None:
         html.addTitle("Vencedor", 3)
-        html.addParagraph(f"{vencedor.text} (tiempo: {parseDuration(vencedor.get('tiempo'))})")
+        html.addParagraph(
+            f"{vencedor.text} (tiempo: {parseDuration(vencedor.get('tiempo'))})"
+        )
 
     html.addTitle("Referencias", 3)
     for ref in referencias:
@@ -136,5 +142,6 @@ def toHtml(archivoXML):
 
     html.escribir("InfoCircuito.html")
     print("Operación exitosa!")
+
 
 toHtml(input("Introduzca nombre fichero XML: "))
