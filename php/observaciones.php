@@ -7,23 +7,17 @@ if (!isset($_SESSION["id_resultado"])) {
 }
 
 $db = new Db();
-
 $mensaje = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $comentario_facilitador = trim($_POST["comentario_facilitador"]);
 
-    $comentario = trim($_POST["comentario"]);
-    $valoracion = isset($_POST["valoracion"]) ? intval($_POST["valoracion"]) : null;
-
-    if ($comentario === "") {
-        $mensaje = "Escribe un comentario.";
-    } elseif ($valoracion === null || $valoracion < 0 || $valoracion > 10) {
-        $mensaje = "La valoración debe estar entre 0 y 10.";
+    if ($comentario_facilitador === "") {
+        $mensaje = "Escribe un comentario del facilitador.";
     } else {
-        $db->insertarObservacion($_SESSION["id_resultado"], $comentario);
-        $db->anadirValoracionUsuario($_SESSION["id_resultado"], $valoracion);
+        $db->insertarObservacion($_SESSION["id_resultado"], $comentario_facilitador);
         unset($_SESSION["id_resultado"]);
-        $mensaje = "Observación y valoración guardadas correctamente.";
+        $mensaje = "Observación del facilitador guardada correctamente.";
     }
 }
 ?>
@@ -50,13 +44,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <h2>Observaciones del facilitador</h2>
 <form method="POST">
-    <label>Comentario adicional:</label><br>
-    <textarea name="comentario" rows="6" cols="60"></textarea><br><br>
+    <label>Comentario del facilitador:</label><br>
+    <textarea name="comentario_facilitador" rows="6" cols="60"></textarea><br><br>
 
-    <label>Valoración del usuario (0-10):</label><br>
-    <input type="number" name="valoracion" min="0" max="10"><br><br>
-
-    <input type="submit" value="Guardar observación">
+    <input type="submit" value="Guardar">
 </form>
 
 <p><?= $mensaje ?></p>

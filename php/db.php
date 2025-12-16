@@ -90,6 +90,20 @@ class Db
         return $ok;
     }
 
+    public function anadirComentarioUsuario($id_resultado, $comentario)
+    {
+        $stmt = $this->db->prepare("
+        UPDATE resultados
+        SET comentarios_usuario = ?
+        WHERE id_resultado = ?
+    ");
+        $stmt->bind_param("si", $comentario, $id_resultado);
+        $stmt->execute();
+        $ok = $stmt->affected_rows > 0;
+        $stmt->close();
+        return $ok;
+    }
+
     public function cerrar()
     {
         $this->db->close();

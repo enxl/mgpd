@@ -8,7 +8,6 @@ class Formulario
     private $errores;
     private $respuestas = [];
     private $db;
-
     private $cronometro;
 
     public function __construct()
@@ -25,7 +24,9 @@ class Formulario
             "¿Qué temperatura hizo el día de la carrera?",
             "¿Hubo mas de un 50% de humedad en los días de entrenamiento?",
             "¿Cuántos puntos hizo Fabio Di Giannantonio en 2024?",
-            "Nombre un equipo que aparezca en el juego de cartas."
+            "Nombre un equipo que aparezca en el juego de cartas.",
+            "Comentario del usuario sobre la experiencia:",
+            "Valoración del usuario (0-10):"
         );
 
         $this->db = new Db();
@@ -43,12 +44,12 @@ class Formulario
         }
     }
 
-
     private function guardarRespuestas()
     {
         if (count($_POST) > 0) {
             $todasContestadas = true;
-            for ($i = 1; $i <= count($this->preguntas); $i++) {
+            
+            for ($i = 1; $i <= 10; $i++) {
                 if (empty($_POST["p$i"])) {
                     $this->errores[$i] = "Debe responder a esta pregunta.";
                     $todasContestadas = false;
@@ -56,56 +57,103 @@ class Formulario
                     $this->respuestas[$i] = $_POST["p$i"];
                 }
             }
+
+            if (empty($_POST["p11"])) {
+                $this->errores[11] = "Debe escribir un comentario.";
+                $todasContestadas = false;
+            } else {
+                $this->respuestas[11] = $_POST["p11"];
+            }
+            
+            if (empty($_POST["p12"]) || !is_numeric($_POST["p12"])) {
+                $this->errores[12] = "Debe ingresar una valoración numérica.";
+                $todasContestadas = false;
+            } else {
+                $valoracion = intval($_POST["p12"]);
+                if ($valoracion < 0 || $valoracion > 10) {
+                    $this->errores[12] = "La valoración debe estar entre 0 y 10.";
+                    $todasContestadas = false;
+                } else {
+                    $this->respuestas[12] = $valoracion;
+                }
+            }
+            
             if ($todasContestadas) {
                 $this->guardarEnBD();
             }
         }
     }
 
-private function guardarEnBD()
-{
-    $this->cronometro->parar();
-    $tiempo = $this->cronometro->getTiempoSegundos();
+    private function guardarEnBD()
+    {
+        $this->cronometro->parar();
+        $tiempo = $this->cronometro->getTiempoSegundos();
 
-    $idUsuario = $_SESSION["id_usuario"] ?? null;
-    $idDispositivo = $_SESSION["id_dispositivo"] ?? null;
+        $idUsuario = $_SESSION["id_usuario"] ?? null;
+        $idDispositivo = $_SESSION["id_dispositivo"] ?? null;
 
-    if (!$idUsuario || !$idDispositivo) {
-        exit("<p>Error: no se encontraron IDs de sesión.</p>");
+        $comentarioUsuario = $this->respuestas[11] ?? null;
+        $valoracion = $this->respuestas[12] ?? null;
+
+        if (!$idUsuario || !$idDispositivo) {
+            exit("<p>Error: no se encontraron IDs de sesión.</p>");
+        }
+
+        $idResultado = $this->db->insertarResultado(
+            $idUsuario,
+            $idDispositivo,
+            $tiempo,
+            true,
+            $comentarioUsuario,  
+            "",
+            $valoracion
+        );
+
+        unset($_SESSION['cronometro_inicio']); 
+        $_SESSION["id_resultado"] = $idResultado;
+        header("Location: observaciones.php");
+        exit();
     }
-
-    // Guardar resultado en BD
-    $idResultado = $this->db->insertarResultado(
-        $idUsuario,
-        $idDispositivo,
-        $tiempo,
-        true,
-        "",
-        "",
-        5
-    );
-
-    unset($_SESSION['cronometro_inicio']); 
-    $_SESSION["id_resultado"] = $idResultado;
-    header("Location: observaciones.php");
-    exit();
-}
 
     public function cargarFormulario()
     {
         echo "<form method='POST' action='#'>";
-        foreach ($this->preguntas as $i => $pregunta) {
-            $num = $i + 1;
-            $valor = isset($this->respuestas[$num]) ? htmlspecialchars($this->respuestas[$num]) : "";
-            $error = isset($this->errores[$num]) ? "<span>{$this->errores[$num]}</span>" : "";
+        
+        for ($i = 1; $i <= 10; $i++) {
+            $pregunta = $this->preguntas[$i-1];
+            $valor = isset($this->respuestas[$i]) ? htmlspecialchars($this->respuestas[$i]) : "";
+            $error = isset($this->errores[$i]) ? "<span>{$this->errores[$i]}</span>" : "";
             echo "
-                <p>$num. $pregunta</p>
+                <p><strong>$i. $pregunta</strong></p>
                 <p>
-                    <input type='text' name='p$num' value='$valor'/>
+                    <input type='text' name='p$i' value='$valor'/>
                     $error
                 </p>
             ";
         }
+        
+        $pregunta11 = $this->preguntas[10];
+        $valor11 = isset($this->respuestas[11]) ? htmlspecialchars($this->respuestas[11]) : "";
+        $error11 = isset($this->errores[11]) ? "<span>{$this->errores[11]}</span>" : "";
+        echo "
+            <p><strong>11. $pregunta11</strong></p>
+            <p>
+                <textarea name='p11' rows='4' cols='60'>$valor11</textarea>
+                $error11
+            </p>
+        ";
+        
+        $pregunta12 = $this->preguntas[11];
+        $valor12 = isset($this->respuestas[12]) ? htmlspecialchars($this->respuestas[12]) : "";
+        $error12 = isset($this->errores[12]) ? "<span>{$this->errores[12]}</span>" : "";
+        echo "
+            <p><strong>12. $pregunta12</strong></p>
+            <p>
+                <input type='number' name='p12' min='0' max='10' value='$valor12'/>
+                $error12
+            </p>
+        ";
+        
         echo "<p><input type='submit' value='Terminar prueba'/></p>";
         echo "</form>";
     }
@@ -125,6 +173,13 @@ private function guardarEnBD()
     <link rel="icon" href="../multimedia/favicon.ico" />
     <link rel="stylesheet" type="text/css" href="../estilo/estilo.css" />
     <link rel="stylesheet" type="text/css" href="../estilo/layout.css" />
+    <style>
+        .error {
+            color: red;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+    </style>
 </head>
 
 <body>

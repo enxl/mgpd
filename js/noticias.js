@@ -1,3 +1,8 @@
+/*
+    Carga de noticias de MotoGP con fetch().
+    Autor: Enol Monte Soto
+    Versión: 2
+*/
 class Noticias {
     
     busqueda;
@@ -13,7 +18,7 @@ class Noticias {
     async buscar() {
         const busquedaAPI = this.busqueda.value.trim();
         if (!busquedaAPI) {
-            // Incluir mensaje de error.
+            console.log("No se pudo conectar con el servicio de notcias.")
             return;
         }
 
@@ -27,7 +32,7 @@ class Noticias {
             this.#jsonAPI = await respuesta.json();
 
         } catch (error) {
-            // Incluir mensaje de error.
+            console.log("No se pudo conectar con el servicio de notcias.")
         }
     }
 
@@ -37,9 +42,9 @@ class Noticias {
             return;
         }
 
-        let noticias = this.#jsonAPI.data;
-        let section = $("section:nth-of-type(2)");
-        let titulo = $("<h2>").text("Noticias de MotoGP");
+        var noticias = this.#jsonAPI.data;
+        var section = $("section:nth-of-type(2)");
+        var titulo = $("<h2>").text("Noticias de MotoGP");
         section.append(titulo);
 
         for (let noticia of noticias) {
