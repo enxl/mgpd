@@ -28,11 +28,16 @@ header h1 {
     justify-content: space-between;
 }
 
-/* Especificidad -> 002 */
-body>div {
-    max-width: 80%;
-    height: 80vh;
-    margin: 5%;
+/* Especificidad -> 002
+    Selector con main porque así está construido el HTML */
+main>div {
+    width: 100%;
+    height: 60vh;
+}
+
+/* Especificidad -> 001 */
+img {
+    max-width: 100%;
 }
 
 @media (min-width: 320px) and (max-width: 799px) {
@@ -59,17 +64,11 @@ body>div {
     }
 
     /* Especificidad -> 001 */
-    img {
-        max-width: fit-content;
-    }
-
-    /* Especificidad -> 001 */
     audio {
         width: 80%;
     }
 
-    /* Especificidad -> 012 */
-    body>p:first-of-type {
+    v body>p:first-of-type {
         display: none;
     }
 
@@ -79,9 +78,10 @@ body>div {
         height: auto;
     }
 
-    body>div {
+    /* Especificidad -> 002 */
+    main>div {
         width: 100%;
-        height: auto;
-        margin: 5%;
+        /* Aviso de redefinición permitido */
+        height: 50vh;
     }
 }

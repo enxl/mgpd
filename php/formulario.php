@@ -48,7 +48,7 @@ class Formulario
     {
         if (count($_POST) > 0) {
             $todasContestadas = true;
-            
+
             for ($i = 1; $i <= 10; $i++) {
                 if (empty($_POST["p$i"])) {
                     $this->errores[$i] = "Debe responder a esta pregunta.";
@@ -64,7 +64,7 @@ class Formulario
             } else {
                 $this->respuestas[11] = $_POST["p11"];
             }
-            
+
             if (empty($_POST["p12"]) || !is_numeric($_POST["p12"])) {
                 $this->errores[12] = "Debe ingresar una valoración numérica.";
                 $todasContestadas = false;
@@ -77,7 +77,14 @@ class Formulario
                     $this->respuestas[12] = $valoracion;
                 }
             }
-            
+
+            if (empty($_POST["p13"])) {
+                $this->errores[13] = "Debe ingresar propuestas.";
+                $todasContestadas = false;
+            } else {
+                $this->respuestas[13] = $_POST["p13"];
+            }
+
             if ($todasContestadas) {
                 $this->guardarEnBD();
             }
@@ -94,6 +101,7 @@ class Formulario
 
         $comentarioUsuario = $this->respuestas[11] ?? null;
         $valoracion = $this->respuestas[12] ?? null;
+        $propuestasMejora = $this->respuestas[13] ?? null;
 
         if (!$idUsuario || !$idDispositivo) {
             exit("<p>Error: no se encontraron IDs de sesión.</p>");
@@ -104,12 +112,12 @@ class Formulario
             $idDispositivo,
             $tiempo,
             true,
-            $comentarioUsuario,  
-            "",
+            $comentarioUsuario,
+            $propuestasMejora,
             $valoracion
         );
 
-        unset($_SESSION['cronometro_inicio']); 
+        unset($_SESSION['cronometro_inicio']);
         $_SESSION["id_resultado"] = $idResultado;
         header("Location: observaciones.php");
         exit();
@@ -118,9 +126,9 @@ class Formulario
     public function cargarFormulario()
     {
         echo "<form method='POST' action='#'>";
-        
+
         for ($i = 1; $i <= 10; $i++) {
-            $pregunta = $this->preguntas[$i-1];
+            $pregunta = $this->preguntas[$i - 1];
             $valor = isset($this->respuestas[$i]) ? htmlspecialchars($this->respuestas[$i]) : "";
             $error = isset($this->errores[$i]) ? "<span>{$this->errores[$i]}</span>" : "";
             echo "
@@ -131,7 +139,7 @@ class Formulario
                 </p>
             ";
         }
-        
+
         $pregunta11 = $this->preguntas[10];
         $valor11 = isset($this->respuestas[11]) ? htmlspecialchars($this->respuestas[11]) : "";
         $error11 = isset($this->errores[11]) ? "<span>{$this->errores[11]}</span>" : "";
@@ -142,7 +150,7 @@ class Formulario
                 $error11
             </p>
         ";
-        
+
         $pregunta12 = $this->preguntas[11];
         $valor12 = isset($this->respuestas[12]) ? htmlspecialchars($this->respuestas[12]) : "";
         $error12 = isset($this->errores[12]) ? "<span>{$this->errores[12]}</span>" : "";
@@ -153,7 +161,20 @@ class Formulario
                 $error12
             </p>
         ";
-        
+
+        $pregunta13 = "Propuestas de mejora:";
+        $valor13 = isset($this->respuestas[13]) ? htmlspecialchars($this->respuestas[13]) : "";
+        $error13 = isset($this->errores[13]) ? "<span class='error'>{$this->errores[13]}</span>" : "";
+
+        echo "
+            <p><strong>13. $pregunta13</strong></p>
+            <p>
+                <textarea name='p13' rows='4' cols='60'>$valor13</textarea>
+                $error13
+            </p>
+        ";
+
+
         echo "<p><input type='submit' value='Terminar prueba'/></p>";
         echo "</form>";
     }

@@ -19,12 +19,11 @@ class Carrusel {
         this.#actual = 0;
     }
 
-    // Obtener fotos desde la API y guardarlas en #fotosJSON
     getFotografias(callback) {
 
         const url = this.#url;
         const parametros = {
-            tags: "sachsenring,motogp",
+            tags: "sachsenring",
             tagmode: "any",
             format: "json"
         };
