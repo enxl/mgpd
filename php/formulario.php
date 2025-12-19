@@ -20,7 +20,7 @@ class Formulario
             "¿Qué es, según esta web, una 'chicane'?",
             "Indique el titular de una noticia que aparezca en el sitio.",
             "¿En qué posición quedó Fabio Di Giannantonio en 2024?",
-            "¿Cuántos habitantes tiene la localidad cercana al circuto de Sachsenring?",
+            "¿Cuántos habitantes tiene la localidad cercana al circuito de Sachsenring?",
             "¿Qué temperatura hizo el día de la carrera?",
             "¿Hubo mas de un 50% de humedad en los días de entrenamiento?",
             "¿Cuántos puntos hizo Fabio Di Giannantonio en 2024?",
