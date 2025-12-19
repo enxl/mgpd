@@ -35,6 +35,7 @@ article img {
     height: 100%;
     position: absolute;
     border-radius: 0.5em;
+    /* Color de frente se hereda */
     background: #1C7CCC;
     backface-visibility: hidden;
 }

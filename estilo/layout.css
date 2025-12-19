@@ -80,6 +80,7 @@ img {
 
     /* Especificidad -> 002 */
     main>div {
+        /* Aviso de redefinición permitido */
         width: 100%;
         /* Aviso de redefinición permitido */
         height: 50vh;

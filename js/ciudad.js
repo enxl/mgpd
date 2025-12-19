@@ -52,8 +52,16 @@ class Ciudad {
     getCoordenadas() {
         var main = document.querySelector("main");
         var parrafo = document.createElement("p");
-        parrafo.textContent = "Coordenadas: (" + this.#latitud + ", " + this.#longitud + ")";
+        parrafo.textContent = "Coordenadas: " + this.#formatearCoordenadas();
         main.appendChild(parrafo);
+    }
+
+    #formatearCoordenadas() {
+        var latitudAbs = Math.abs(this.#latitud);
+        var longitudAbs = Math.abs(this.#longitud);
+        var latitudDir = this.#latitud >= 0 ? "N" : "S";
+        var longitudDir = this.#longitud >= 0 ? "E" : "W";
+        return `(${latitudAbs} ${latitudDir}, ${longitudAbs} ${longitudDir})`;
     }
 
     // Meteorología Open Meteo.
@@ -234,7 +242,7 @@ class Ciudad {
     }
 
     #formatearHora(fecha) {
-        return fecha.split("T")[1].slice(0,5)
+        return fecha.split("T")[1].slice(0, 5)
     }
-    
+
 }

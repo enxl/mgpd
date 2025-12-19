@@ -44,8 +44,6 @@ class Noticias {
 
         var noticias = this.#jsonAPI.data;
         var section = $("section:nth-of-type(2)");
-        var titulo = $("<h2>").text("Noticias de MotoGP");
-        section.append(titulo);
 
         for (let noticia of noticias) {
             let article = $("<article>");

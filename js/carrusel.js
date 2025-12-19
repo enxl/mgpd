@@ -23,7 +23,7 @@ class Carrusel {
 
         const url = this.#url;
         const parametros = {
-            tags: "sachsenring",
+            tags: "motogp,sachsenring",
             tagmode: "any",
             format: "json"
         };
@@ -64,28 +64,38 @@ class Carrusel {
     }
 
     mostrarFotografias() {
-        if (!this.#jsonProcesado || this.#jsonProcesado.imagenes.length === 0) {
+        if (
+            !this.#jsonProcesado ||
+            !this.#jsonProcesado.imagenes ||
+            this.#jsonProcesado.imagenes.length === 0
+        ) {
             console.error("No hay imágenes para mostrar.");
             return;
         }
 
-        var section = $("section:nth-of-type(1)");;
+        const section = $("section:nth-of-type(1)");
+        const primeraImagen = this.#jsonProcesado.imagenes[0];
 
-        var primeraImagen = this.#jsonProcesado.imagenes[0];
+        const h3 = $("<h3>").text("Carrusel de fotos");
 
-        var titulo = $("<h2>").text("Imágenes del circuito de Sachsenring");
-        var imagen = $("<img>").attr({
+        const imagen = $("<img>").attr({
             src: primeraImagen.url,
             alt: primeraImagen.titulo
         });
 
-        var elementos = titulo.add(imagen);
-        var article = $("<article>").append(elementos);
+        const article = $("<article>").append(h3, imagen);
         section.append(article);
 
-        // Pasar galería fotos.
-        setInterval(this.cambiarFotografia.bind(this), 3000);
+        if (this.intervalo) {
+            clearInterval(this.intervalo);
+        }
+
+        this.intervalo = setInterval(
+            this.cambiarFotografia.bind(this),
+            3000
+        );
     }
+
 
     cambiarFotografia() {
         if (!this.#jsonProcesado || this.#jsonProcesado.imagenes.length === 0) {

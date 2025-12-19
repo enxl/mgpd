@@ -1,5 +1,4 @@
 id_resultado,id_usuario,id_dispositivo,tiempo,completada,comentarios_usuario,propuestas_mejora,valoracion_usuario
 1,1,1,237.8,1,"El juego está bien.","Información de la localidad debería estar en circuito.",9
-2,2,2,303.1,1,"Muy usable pero la interfaz de usuario es un poco básica.","Indicar norte/sur, este/oeste en las coordenadas.
-La ayuda debería incluir donde están las noticias.",8
+2,2,2,303.1,1,"Muy usable pero la interfaz de usuario es un poco básica.","Indicar norte/sur, este/oeste en las coordenadas. La ayuda debería incluir donde están las noticias.",8
 3,3,3,261.48,1,"Se navega bien en móvil y los colores son bonitos.","Indicar donde están las noticias.",9
