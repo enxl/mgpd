@@ -46,11 +46,6 @@ svg {
     display: block;
 }
 
-/* Especificidad -> 001 */
-table {
-    max-width: 100%;
-}
-
 @media (min-width: 320px) and (max-width: 799px) {
 
     /* Especificidad -> 001 */
@@ -96,5 +91,16 @@ table {
         width: 100%;
         /* Aviso de redefinición permitido */
         height: 50vh;
+    }
+}
+
+/* Esto se tuvo que añadir para evitar scroll horizontal de la tabla en dispositivos muy pequeños */
+@media (max-width: 799px) {
+
+    /* Especificidad -> 002 */
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
     }
 }
