@@ -141,10 +141,11 @@ $reg = new Registro();
     <header>
         <h1>MotoGP-Desktop</h1>
     </header>
-
+    <main>
     <h2>Registro previo a la encuesta</h2>
 
     <?php $reg->mostrar(); ?>
+    </main>
 </body>
 
 </html>

@@ -43,7 +43,9 @@ class Circuito {
                     section.appendChild(contentMain.firstChild);
                 }
 
-                main.appendChild(section);
+                //main.appendChild(section);
+                var input = document.querySelector("main input:nth-of-type(1)");
+                input.after(section);
             };
             lector.readAsText(archivo);
         } else {
@@ -83,10 +85,11 @@ class CargadorSVG {
         const parser = new DOMParser();
         var documentoSVG = parser.parseFromString(svg, 'image/svg+xml');
         var main = document.getElementsByTagName("main")[0];
+        var input = document.querySelector("main input:nth-of-type(2)");
         var elementoSVG = documentoSVG.documentElement;
-        main.appendChild(elementoSVG);
+        input.after(elementoSVG);
     }
-    
+
 }
 
 class CargadorKML {

@@ -222,6 +222,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="description" content="Pruebas de usabilidad de la web MotoGP-Desktop." />
     <meta name="keywords" content="MotoGP, Ayuda" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../multimedia/favicon.ico" />
     <link rel="stylesheet" type="text/css" href="../estilo/estilo.css" />
     <link rel="stylesheet" type="text/css" href="../estilo/layout.css" />
 </head>
@@ -230,7 +231,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <header>
         <h1>MotoGP-Desktop</h1>
     </header>
-
+    <main>
     <h2>Configuración de la base de datos.</h2>
 
     <form method="post">
@@ -243,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php if (!empty($mensaje)) { ?>
         <p><?php echo $mensaje; ?></p>
     <?php } ?>
-
+    </main>
 </body>
 
 </html>

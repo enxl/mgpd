@@ -31,12 +31,23 @@ header h1 {
 /* Especificidad -> 002
     Selector con main porque así está construido el HTML */
 main>div {
-    width: 100%;
-    height: 60vh;
+    width: 50%;
+    height: 40vh;
 }
 
 /* Especificidad -> 001 */
 img {
+    max-width: 100%;
+    display: block;
+}
+
+/* Especificidad -> 001 */
+svg {
+    display: block;
+}
+
+/* Especificidad -> 001 */
+table {
     max-width: 100%;
 }
 
@@ -68,7 +79,8 @@ img {
         width: 80%;
     }
 
-    v body>p:first-of-type {
+    /* Especificidad -> 012 */
+    body>p:first-of-type {
         display: none;
     }
 

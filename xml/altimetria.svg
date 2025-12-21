@@ -1,4 +1,4 @@
 <?xml version='1.0' encoding='utf-8'?>
-<svg xmlns="http://www.w3.org/2000/svg" version="2.0" width="500" height="400">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="500" height="400">
   <polyline stroke-width="3" points="0,318 31,330 35,335 40,334 50,331 57,328 67,324 74,317 84,314 90,317 105,324 120,330 132,334 147,325 179,319 201,312 224,314 249,333 331,337 339,334 343,304 369,305 379,306 386,311 417,318 417,400 0,400 0,318" stroke="red" fill="#EAFF00" />
 </svg>

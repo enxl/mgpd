@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <header>
     <h1>MotoGP-Desktop</h1>
 </header>
-
+<main>
 <h2>Observaciones del facilitador</h2>
 <form method="POST">
     <label>Comentario del facilitador:</label><br>
@@ -53,4 +53,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <p><?= $mensaje ?></p>
 
 </body>
+</main>
 </html>

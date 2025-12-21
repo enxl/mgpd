@@ -21,7 +21,7 @@ class Svg(object):
         """
         self.raiz = ET.Element('svg',
                        xmlns="http://www.w3.org/2000/svg",
-                       version="2.0",
+                       version="1.1",
                        width="500",
                        height="400")
 
